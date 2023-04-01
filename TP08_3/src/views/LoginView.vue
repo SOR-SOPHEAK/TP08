@@ -1,28 +1,26 @@
 <template>
-    <div class="login">
-        <form action="/home" >
-            <div class="imgcontainer">
-                <img src="@/assets/avatar.png" alt="Avatar" class="avatar">
-            </div>
-            <div class="container">
-                <label for="username">Username</label>
-                <input type="email" placeholder="Enter Email" name="username" required>
+  <div class="login">
+    <div class="imgcontainer">
+      <img src="@/assets/avatar.png" alt="Avatar" class="avatar">
+    </div>
+    <div class="container">
+      <label for="username">Username</label>
+      <input type="username" placeholder="Enter Username" ref="username" required>
 
-                <label for="password">Password</label>
-                <input type="password" placeholder="Enter Password" name="password" required>
-
-                <button type="submit">Login</button>
-            </div>
-            <div class="container" style="background-color:#f1f1f1">
-                <p class="password">Forgot <a href="#">password?</a></p>
-            </div>
-        </form>
-    </div>    
+      <label for="password">Password</label>
+      <input type="password" placeholder="Enter Password" ref="password" required>
+      <button type="submit" id="login" v-on:click="login();">Login</button>
+      </div>
+      <div class="forgotpassword">
+        <p class="password">Forgot <a href="#">password?</a></p>
+      </div>
+  </div>    
 </template>
   <style>
     @media (min-width: 800px) {
       .login {
-        min-height: 100vh;
+        margin-top: 30px;
+        min-height: 70vh;
         display: flex;
         align-items: center;
       }
@@ -34,20 +32,18 @@
 
     .login{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
-    }
-
-    form {
         border: 3px solid #f1f1f1;
         border-radius: 5px;
+        /* height: 500px; */
     }
 
     label{
         font-size: 20px;
     }
 
-    input[type=email], input[type=password] {
+    input[type=username], input[type=password] {
         width: 100%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -81,11 +77,50 @@
     }
 
     .container {
-        padding: 16px;
+        padding: 5px;
     }
 
-    p.password {
+    .forgotpassword{
+      background-color: #f1f1f1;
+      width: 100%;
+      /* margin-top: 0; */
+      /* float: right; */
+    }
+
+    .password {
         float: right;
-        padding-top: 16px;
+        /* padding-top: 6px; */
     }
   </style>
+  <script>
+  export default {
+    name: "Login",
+    data(){
+      return{
+        username: '',
+        password: ''
+      }
+    },
+    methods:{
+      login(){
+        fetch('http://localhost:3001/login', {
+          method: 'POST',
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body: JSON.stringify({
+            "username":this.$refs.username.value, 
+            "password":this.$refs.password.value
+          })
+        }).then(res => {
+          return res.json();
+        }).then((data) => {
+          console.log(data);
+          if(data.success == true){
+            this.$router.push('/home')
+          }
+        })
+      }
+    }
+  }
+  </script>

@@ -20,7 +20,7 @@
         <img src="@/assets/search.png" alt="Search" class="searchlogo">
         <h1>|</h1>
         <form action="/">
-          <button id="logout">Logout</button>
+          <button id="logout" style="border: none;">Logout</button>
         </form>
       </div>
     </nav>
